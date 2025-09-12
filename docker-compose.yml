@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: foodshare
+      MYSQL_USER: foodshare
+      MYSQL_PASSWORD: foodshare123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/sql_init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DB_USER: foodshare
+      DB_PASSWORD: foodshare123
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: foodshare
+      SECRET_KEY: your-super-secret-key-change-in-production-must-be-at-least-32-characters-long
+      DEBUG: "False"
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    depends_on:
+      - db
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

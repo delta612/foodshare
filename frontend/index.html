@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodShare - Share Food, Reduce Waste</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-utensils"></i>
+          <span>FoodShare</span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <a href="#home" class="nav-link active">Home</a>
+          <a href="#browse" class="nav-link">Browse Food</a>
+          <a href="#share" class="nav-link">Share Food</a>
+          <a href="#messages" class="nav-link">Messages</a>
+          <div class="nav-auth" id="nav-auth">
+            <button class="btn btn-outline" onclick="showLogin()">Login</button>
+            <button class="btn btn-primary" onclick="showRegister()">
+              Sign Up
+            </button>
+          </div>
+          <div class="nav-user" id="nav-user" style="display: none">
+            <span id="user-name"></span>
+            <button class="btn btn-outline" onclick="logout()">Logout</button>
+          </div>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Section -->
+      <section id="home" class="section active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>Share Food, Reduce Waste</h1>
+            <p>
+              Connect with your community to share surplus food and help reduce
+              food waste. Every meal shared makes a difference.
+            </p>
+            <div class="hero-buttons">
+              <button
+                class="btn btn-primary btn-large"
+                onclick="showSection('browse')"
+              >
+                <i class="fas fa-search"></i> Find Food
+              </button>
+              <button
+                class="btn btn-secondary btn-large"
+                onclick="showSection('share')"
+              >
+                <i class="fas fa-plus"></i> Share Food
+              </button>
+            </div>
+          </div>
+          <div class="hero-image">
+            <i class="fas fa-heart"></i>
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature-card">
+            <i class="fas fa-leaf"></i>
+            <h3>Reduce Waste</h3>
+            <p>
+              Help reduce food waste by sharing surplus food with your
+              community.
+            </p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-users"></i>
+            <h3>Build Community</h3>
+            <p>
+              Connect with neighbors and build a stronger, more caring
+              community.
+            </p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-hand-holding-heart"></i>
+            <h3>Help Others</h3>
+            <p>
+              Make a positive impact by helping those in need access fresh food.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Browse Food Section -->
+      <section id="browse" class="section">
+        <div class="section-header">
+          <h2>Available Food</h2>
+          <div class="search-filters">
+            <div class="search-bar">
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search for food..."
+              />
+              <button onclick="searchFood()">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            <select id="category-filter">
+              <option value="">All Categories</option>
+            </select>
+            <select id="location-filter">
+              <option value="">All Locations</option>
+            </select>
+          </div>
+        </div>
+        <div class="food-grid" id="food-grid">
+          <!-- Food cards will be loaded here -->
+        </div>
+        <div class="loading" id="loading" style="display: none">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading food posts...</p>
+        </div>
+      </section>
+
+      <!-- Share Food Section -->
+      <section id="share" class="section">
+        <div class="section-header">
+          <h2>Share Your Food</h2>
+          <p>
+            Help reduce food waste by sharing surplus food with your community.
+          </p>
+        </div>
+        <div class="share-form-container">
+          <form id="share-form" class="share-form">
+            <div class="form-group">
+              <label for="food-title">Food Title *</label>
+              <input
+                type="text"
+                id="food-title"
+                name="title"
+                required
+                placeholder="e.g., Fresh Apples from my garden"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="food-description">Description *</label>
+              <textarea
+                id="food-description"
+                name="description"
+                required
+                placeholder="Describe the food, its condition, and any special notes..."
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="food-category">Category</label>
+                <select id="food-category" name="category_id">
+                  <option value="">Select a category</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="food-quantity">Quantity</label>
+                <input
+                  type="text"
+                  id="food-quantity"
+                  name="quantity"
+                  placeholder="e.g., 2 bags, 5 lbs"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiry-date">Expiry Date</label>
+                <input type="date" id="expiry-date" name="expiry_date" />
+              </div>
+              <div class="form-group">
+                <label for="pickup-location">Pickup Location *</label>
+                <input
+                  type="text"
+                  id="pickup-location"
+                  name="pickup_location"
+                  required
+                  placeholder="e.g., 123 Main St, City"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pickup-start">Available From</label>
+                <input type="time" id="pickup-start" name="pickup_time_start" />
+              </div>
+              <div class="form-group">
+                <label for="pickup-end">Available Until</label>
+                <input type="time" id="pickup-end" name="pickup_time_end" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="food-images">Food Photos *</label>
+              <div class="file-upload">
+                <input
+                  type="file"
+                  id="food-images"
+                  name="images"
+                  multiple
+                  accept="image/*"
+                  required
+                />
+                <div class="file-upload-display">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <p>Click to select photos or drag and drop</p>
+                  <small>Up to 5 images, max 10MB each</small>
+                </div>
+              </div>
+              <div class="image-preview" id="image-preview"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">
+              <i class="fas fa-share"></i> Share Food
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Messages Section -->
+      <section id="messages" class="section">
+        <div class="section-header">
+          <h2>Messages</h2>
+          <p>Communicate with other users about food sharing.</p>
+        </div>
+        <div class="messages-container" id="messages-container">
+          <div class="no-messages">
+            <i class="fas fa-comments"></i>
+            <p>No messages yet. Start a conversation about food!</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Login</h3>
+          <span class="close" onclick="closeModal('login-modal')">&times;</span>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="username" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+        <p class="modal-footer">
+          Don't have an account?
+          <a href="#" onclick="showRegister()">Sign up here</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Create Account</h3>
+          <span class="close" onclick="closeModal('register-modal')"
+            >&times;</span
+          >
+        </div>
+        <form id="register-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="register-username">Username *</label>
+              <input
+                type="text"
+                id="register-username"
+                name="username"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="register-email">Email *</label>
+              <input type="email" id="register-email" name="email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="register-fullname">Full Name</label>
+            <input type="text" id="register-fullname" name="full_name" />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password *</label>
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-city">City</label>
+            <input type="text" id="register-city" name="city" />
+          </div>
+          <div class="form-group">
+            <label for="register-bio">Bio</label>
+            <textarea
+              id="register-bio"
+              name="bio"
+              placeholder="Tell us about yourself..."
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            Create Account
+          </button>
+        </form>
+        <p class="modal-footer">
+          Already have an account?
+          <a href="#" onclick="showLogin()">Login here</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Food Detail Modal -->
+    <div id="food-detail-modal" class="modal">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h3 id="food-detail-title"></h3>
+          <span class="close" onclick="closeModal('food-detail-modal')"
+            >&times;</span
+          >
+        </div>
+        <div class="food-detail-content" id="food-detail-content">
+          <!-- Food details will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
