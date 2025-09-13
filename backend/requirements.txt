@@ -1,7 +1,6 @@
 fastapi
 uvicorn
 python-multipart      # for handling file uploads
-python-dotenv
 passlib[bcrypt]
 PyMySQL      # MySQL driver
 SQLAlchemy      # ORM
